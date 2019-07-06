@@ -1,8 +1,8 @@
 name: flutter_automation
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+description: A flutter package that provides various automation scripts to help you with your flutter project.
+version: 1.0.0
+author: Damodar Lohani<dlohani48@gmail.com>
+homepage: https://github.com/lohanidamodar/fluter_automation
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
