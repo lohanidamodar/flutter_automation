@@ -28,6 +28,8 @@ flutter pub pub run flutter_automation --google-maps
 ### 3. Android Signing
 Generates keystore and sets up android signing config in your flutter project.
 
+It uses `keytool` to generate keystore so, for this script to work `keytool` must be in path.
+
 ```
 flutter pub pub run flutter_automation --android-sign
 ```
