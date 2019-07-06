@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:path/path.dart' as path;
 
 import './commons.dart' as commons;
 
@@ -26,15 +25,14 @@ void addDependencise() {
   }).toList();
   String content = plugins.join("\n");
   commons.addDependencise(content);
-  stdout.write("added dependencies \n");
+  stdout.writeln("added dependencies");
 }
 
 void addGoogleService() {
   String pbuild = commons.getFileAsString(commons.projectBuildPath);
   if(!pbuild.contains("com.google.gms:google-services")) {
-    pbuild = pbuild.replaceFirst(RegExp("dependencies.*{"), "dependencies {\n        classpath 'com.google.gms:google-services:${config['google_services']}'\n");
-    commons.writeStringToFile(commons.projectBuildPath, pbuild);
-    stdout.write("added google services\n");
+    commons.replaceFirstStringInfile(commons.projectBuildPath, RegExp("dependencies.*{"), "dependencies {\n        classpath 'com.google.gms:google-services:${config['google_services']}'\n");
+    stdout.writeln("added google services");
   }
 }
 
