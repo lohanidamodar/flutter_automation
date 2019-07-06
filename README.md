@@ -7,7 +7,7 @@ To use this plugin, add `flutter_automation` as a [dependency in your pubspec.ya
 ## Running scripts
 From terminal in your flutter project run,
 ```
-flutter pub pub run flutter_automation --firebase-auth --google-maps
+flutter pub pub run flutter_automation --firebase-auth --google-maps --android-sign
 ```
 ### 1. Firebase Auth
 This sets up firebase authentication with google and email based login automatically in your flutter project. Also copies boilerplate login ui flow using `provider` package for state management
@@ -23,4 +23,11 @@ After you run the script in your flutter project you need to modify `android/app
 
 ```
 flutter pub pub run flutter_automation --google-maps
+```
+
+### 3. Android Signing
+Generates keystore and sets up android signing config in your flutter project.
+
+```
+flutter pub pub run flutter_automation --android-sign
 ```
