@@ -11,7 +11,7 @@ void googleMaps(){
 }
 
 void addGoogleMap() {
-  String googleMapsPlugin = "google_maps_flutter: ${commons.loadConfig()['google_maps']}";
+  String googleMapsPlugin = "  google_maps_flutter: ${commons.loadConfig()['plugins']['google_maps']}";
   commons.addDependencise(googleMapsPlugin);
   stdout.writeln("added google maps plugin to pubspec");
 }
