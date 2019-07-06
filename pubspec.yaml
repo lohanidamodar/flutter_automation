@@ -10,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  args: ^1.5.2
+  yaml: ^2.1.16
+  path:
 
 dev_dependencies:
   flutter_test:
