@@ -14,7 +14,8 @@ Map<String,dynamic> defaultConfig = {
   "plugins":{
     "firebase_auth":"^0.11.1+7",
     "google_sign_in":"^4.0.2",
-    "provider":"^3.0.0+1"
+    "provider":"^3.0.0+1",
+    "google_maps":"^0.5.19"
   },
   "google_services": "4.2.0"
 };
@@ -28,10 +29,13 @@ Map<String,dynamic> loadConfig() {
 
 
 void addDependencise(String dependencies) {
-  String pubspec = getFileAsString(pubspecPath);
-  pubspec = pubspec.replaceFirst("dev_dependencies:",   "$dependencies\ndev_dependencies:");
-  
-  writeStringToFile( pubspecPath, pubspec);
+  replaceFirstStringInfile(pubspecPath, "dev_dependencies:", "$dependencies\ndev_dependencies:");
+}
+
+void replaceFirstStringInfile(String path, Pattern from, String to) {
+  String contents = getFileAsString(path);
+  contents = contents.replaceFirst(from, to);
+  writeStringToFile(path, contents);
 }
 
 String getFileAsString(String path) {
