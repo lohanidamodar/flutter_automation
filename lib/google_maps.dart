@@ -11,10 +11,8 @@ void googleMaps(){
 }
 
 void addGoogleMap() {
-  String pubspec = commons.getFileAsString(commons.pubspecPath);
   String googleMapsPlugin = "google_maps_flutter: ${commons.loadConfig()['google_maps']}";
-  pubspec = pubspec.replaceFirst("dev_dependencies", "$googleMapsPlugin\ndev_dependencies");
-  commons.writeStringToFile(commons.pubspecPath, pubspec);
+  commons.addDependencise(googleMapsPlugin);
   stdout.writeln("added google maps plugin to pubspec");
 }
 
@@ -28,9 +26,7 @@ void setupApiKey() {
 }
 
 void addKeyToManifest() {
-  String manifest = commons.getFileAsString(commons.manifestPath);
   String apiKey = "<meta-data android:name=\"com.google.android.geo.API_KEY\" android:value=\"@string/map_api_key\"/>";
-  manifest = manifest.replaceFirst("<activity", "$apiKey\n        <activity");
-  commons.writeStringToFile(commons.manifestPath, manifest);
+  commons.replaceFirstStringInfile(commons.manifestPath,"<activity", "$apiKey\n        <activity");
   stdout.writeln("added map api key to manifest file");
 }

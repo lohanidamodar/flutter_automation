@@ -28,10 +28,13 @@ Map<String,dynamic> loadConfig() {
 
 
 void addDependencise(String dependencies) {
-  String pubspec = getFileAsString(pubspecPath);
-  pubspec = pubspec.replaceFirst("dev_dependencies:",   "$dependencies\ndev_dependencies:");
-  
-  writeStringToFile( pubspecPath, pubspec);
+  replaceFirstStringInfile(pubspecPath, "dev_dependencies:", "$dependencies\ndev_dependencies:");
+}
+
+void replaceFirstStringInfile(String path, Pattern from, String to) {
+  String contents = getFileAsString(path);
+  contents = contents.replaceFirst(from, to);
+  writeStringToFile(path, contents);
 }
 
 String getFileAsString(String path) {
