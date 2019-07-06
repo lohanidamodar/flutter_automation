@@ -1,14 +1,14 @@
-# flutter_automation
+# Flutter Automation
+This package contains various automation scripts that will help you automate various aspects of your flutter project.
 
-A new Flutter package project.
+## Usage
+To use this plugin, add `flutter_automation` as a [dependency in your pubspec.yaml file](https://flutter.io/docs/development/packages-and-plugins/using-packages).
 
-## Getting Started
+## Running scripts
+### 1. Firebase Auth
+This sets up firebase authentication with google and email based login automatically in your flutter project. Also copies boilerplate login ui flow using `provider` package for state management
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+From terminal in your flutter project run,
+```
+flutter pub pub run flutter_automation -f
+```
