@@ -62,7 +62,7 @@ void upgradeToAndroidX(){
 
 
 void copyStockFiles() {
-  String stockPath = "${commons.scriptRoot}/lib/auth_stock/lib";
+  String stockPath = "${commons.scriptRoot}/example/lib/auth_stock/lib";
   Process.run("cp", ["-r",  stockPath, "./"],stdoutEncoding: Utf8Codec()).then((res){
     stdout.write(res.stdout);
     stderr.write(res.stderr);
