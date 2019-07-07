@@ -1,16 +1,35 @@
-# example
+# Flutter Automation Example
+This package contains various automation scripts that will help you automate various aspects of your flutter project.
 
-A new Flutter project.
+## Usage
+To use this plugin, add `flutter_automation` as a [dependency in your pubspec.yaml file](https://flutter.io/docs/development/packages-and-plugins/using-packages).
 
-## Getting Started
+## Running scripts
+From terminal in your flutter project run,
+```
+flutter pub pub run flutter_automation --firebase-auth --google-maps --android-sign
+```
+### 1. Firebase Auth
+This sets up firebase authentication with google and email based login automatically in your flutter project. Also copies boilerplate login ui flow using `provider` package for state management
 
-This project is a starting point for a Flutter application.
+```
+flutter pub pub run flutter_automation --firebase-auth
+```
 
-A few resources to get you started if this is your first Flutter project:
+### 2. Google Maps
+sets up google maps flutter plugin on android platform in a flutter project.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+After you run the script in your flutter project you need to modify `android/app/src/main/res/values/strings.xml` file changing the text `YOUR_API_KEY` to your actual google maps Api key.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```
+flutter pub pub run flutter_automation --google-maps
+```
+
+### 3. Android Signing
+Generates keystore and sets up android signing config in your flutter project.
+
+It uses `keytool` to generate keystore so, for this script to work `keytool` must be in path.
+
+```
+flutter pub pub run flutter_automation --android-sign
+```
