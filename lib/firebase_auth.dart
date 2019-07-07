@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:path/path.dart' as path;
 
 import './commons.dart' as commons;
 
@@ -62,10 +63,26 @@ void upgradeToAndroidX(){
 
 
 void copyStockFiles() {
-  String stockPath = "${commons.scriptRoot}/example/lib/auth_stock/lib";
+  String stockPath = "${commons.scriptRoot}/lib/auth_stock/lib";
   Process.run("cp", ["-r",  stockPath, "./"],stdoutEncoding: Utf8Codec()).then((res){
     stdout.write(res.stdout);
     stderr.write(res.stderr);
+    renameStockFiles();
   });
   stdout.write("copied stock ui for firebase auth\n");
+}
+
+void renameStockFiles() {
+  Directory dir = Directory("./lib");
+  List<FileSystemEntity> files = dir.listSync(recursive: true);
+  files.forEach((file){
+    if(file is File) {
+      String filename = path.basename(file.path);
+      if(filename.substring(filename.length-5,filename.length)==".temp") {
+        String newFilename = filename.substring(0,filename.length - 5);
+        file.renameSync(path.dirname(file.path) + path.separator + newFilename);
+      }
+    }
+  });
+  stdout.writeln("renamed stock files");
 }
