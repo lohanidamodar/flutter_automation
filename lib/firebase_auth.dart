@@ -5,10 +5,10 @@ import 'package:path/path.dart' as path;
 import './commons.dart' as commons;
 
 List<String> plugins = ["firebase_auth", "provider", "google_sign_in"];
-Map<String,dynamic> config = commons.loadConfig();
-const String gradlePropertiesPath="./android/gradle.properties";
+Map<String, dynamic> config = commons.loadConfig();
+const String gradlePropertiesPath = "./android/gradle.properties";
 
-void firebaseAuth(){
+void firebaseAuth() {
   upgradeToAndroidX();
   addDependencise();
   addGoogleService();
@@ -18,10 +18,10 @@ void firebaseAuth(){
 
 void addDependencise() {
   String pubspec = commons.getFileAsString(commons.pubspecPath);
-  plugins = plugins.where((plugin){
+  plugins = plugins.where((plugin) {
     return !pubspec.contains(plugin);
   }).toList();
-  plugins = plugins.map((plugin){
+  plugins = plugins.map((plugin) {
     return "  $plugin: ${config['plugins'][plugin]}";
   }).toList();
   String content = plugins.join("\n");
@@ -31,26 +31,32 @@ void addDependencise() {
 
 void addGoogleService() {
   String pbuild = commons.getFileAsString(commons.projectBuildPath);
-  if(!pbuild.contains("com.google.gms:google-services")) {
-    commons.replaceFirstStringInfile(commons.projectBuildPath, RegExp("dependencies.*{"), "dependencies {\n        classpath 'com.google.gms:google-services:${config['google_services']}'\n");
+  if (!pbuild.contains("com.google.gms:google-services")) {
+    commons.replaceFirstStringInfile(
+        commons.projectBuildPath,
+        RegExp("dependencies.*{"),
+        "dependencies {\n        classpath 'com.google.gms:google-services:${config['google_services']}'\n");
     stdout.writeln("added google services");
   }
 }
 
-void upgradeToAndroidX(){
+void upgradeToAndroidX() {
   String properties = commons.getFileAsString(gradlePropertiesPath);
-  if(!properties.contains("android.useAndroidX")) {
-    properties = "$properties\n\nandroid.enableJetifier=true\nandroid.useAndroidX=true\n";
+  if (!properties.contains("android.useAndroidX")) {
+    properties =
+        "$properties\n\nandroid.enableJetifier=true\nandroid.useAndroidX=true\n";
     commons.writeStringToFile(gradlePropertiesPath, properties);
   }
 
   List<String> contents = commons.getFileAsLines(commons.appBuildPath);
-  contents = contents.map((line){
-    if(line.contains("testInstrumentationRunner"))
+  contents = contents.map((line) {
+    if (line.contains("testInstrumentationRunner"))
       return "        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n";
-    else if(line.contains("androidTestImplementation 'com.android.support.test:runner"))
+    else if (line
+        .contains("androidTestImplementation 'com.android.support.test:runner"))
       return "    androidTestImplementation 'androidx.test:runner:1.1.1'\n";
-    else if(line.contains("androidTestImplementation 'com.android.support.test.espresso:espresso-core"))
+    else if (line.contains(
+        "androidTestImplementation 'com.android.support.test.espresso:espresso-core"))
       return "    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'\n";
     else
       return line;
@@ -60,7 +66,6 @@ void upgradeToAndroidX(){
   commons.writeStringToFile(commons.appBuildPath, content);
   stdout.write("upgraded to androidx\n");
 }
-
 
 void copyStockFiles() {
   String stockPath = "${commons.scriptRoot}/lib/auth_stock/lib";
