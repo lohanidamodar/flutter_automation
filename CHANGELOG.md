@@ -2,3 +2,6 @@
 * Bug fixing
 * Certain validations
 * Stock files updated, renamed .temp to prevent analysis of while publishing
+
+## [1.2.0] - Firestore CRUD boilerplate
+* Firestore CRUD boilerplate automation

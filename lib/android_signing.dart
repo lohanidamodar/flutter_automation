@@ -14,37 +14,52 @@ void androidSign() {
 }
 
 void generateKeystore() {
-  String defDname = "CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP";
-  
+  String defDname =
+      "CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP";
+
   stdout.write("enter key alias: ");
   alias = stdin.readLineSync();
-  
-  stdout.write("enter dname as (CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP): ");
+
+  stdout.write(
+      "enter dname as (CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP): ");
   String dname = stdin.readLineSync();
-  if(dname.isEmpty) dname = defDname;
+  if (dname.isEmpty) dname = defDname;
   stdout.write("key password: ");
   keyPass = stdin.readLineSync();
   stdout.write("keystore password: ");
   keystorePass = stdin.readLineSync();
-  if(alias.isEmpty || dname.isEmpty || keyPass.isEmpty || keystorePass.isEmpty) {
+  if (alias.isEmpty ||
+      dname.isEmpty ||
+      keyPass.isEmpty ||
+      keystorePass.isEmpty) {
     stderr.writeln("All inputs that don't have default mentioned are required");
     return;
   }
 
   Directory keys = Directory("keys");
-  if(!keys.existsSync()) {
+  if (!keys.existsSync()) {
     keys.createSync();
   }
 
-  ProcessResult res = Process.runSync("keytool",[ "-genkey", "-noprompt",
-    "-alias", alias,
-    "-dname", dname,
-    "-keystore", keystorePath,
-    "-storepass", keystorePass,
-    "-keypass", keyPass,
-    "-keyalg", "RSA",
-    "-keysize", "2048",
-    "-validity", "10000"
+  ProcessResult res = Process.runSync("keytool", [
+    "-genkey",
+    "-noprompt",
+    "-alias",
+    alias,
+    "-dname",
+    dname,
+    "-keystore",
+    keystorePath,
+    "-storepass",
+    keystorePass,
+    "-keypass",
+    keyPass,
+    "-keyalg",
+    "RSA",
+    "-keysize",
+    "2048",
+    "-validity",
+    "10000"
   ]);
   stdout.write(res.stdout);
   stderr.write(res.stderr);
@@ -63,7 +78,7 @@ storeFile=../../$keystorePath
 void configureBuildConfig() {
   List<String> buildfile = commons.getFileAsLines(commons.appBuildPath);
   buildfile = buildfile.map((line) {
-    if(line.contains(RegExp("android.*{"))) {
+    if (line.contains(RegExp("android.*{"))) {
       return """
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -73,7 +88,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
             """;
-    }else if(line.contains(RegExp("buildTypes.*{"))) {
+    } else if (line.contains(RegExp("buildTypes.*{"))) {
       return """
   signingConfigs {
       release {
@@ -85,9 +100,9 @@ android {
   }
   buildTypes {
             """;
-    }else if(line.contains("signingConfig signingConfigs.debug")){
+    } else if (line.contains("signingConfig signingConfigs.debug")) {
       return "            signingConfig signingConfigs.release";
-    }else{
+    } else {
       return line;
     }
   }).toList();
