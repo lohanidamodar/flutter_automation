@@ -9,6 +9,13 @@ void firestoreCrud() {
 }
 
 void addFirestorePlugin() {
+  String pubspec = commons.getFileAsString(commons.pubspecPath);
+  String plugin =
+      "  cloud_firestore: ${commons.loadConfig()['plugins']['firestore']}";
+  if (!pubspec.contains("provider")) {
+    plugin =
+        "$plugin\n  provider: ${commons.loadConfig()['plugins']['provider']}";
+  }
   commons.addDependencise(
       "  cloud_firestore: ${commons.loadConfig()['plugins']['firestore']}");
   stdout.writeln("cloud firestore dependencies added");
