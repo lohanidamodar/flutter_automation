@@ -84,7 +84,7 @@ class NotesList extends StatelessWidget {
             child: Card(
               child: ListTile(
                 title: Text(note.title),
-                subtitle: Text(note.description.substring(0,note.description.length < 20 ? note.description.length : 20)),
+                subtitle: Text(note.description.substring(0,note.description.length < 20 ? note.description.length : 20) + (note.description.length < 20 ? "" : "...")),
                 trailing: IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: (){
