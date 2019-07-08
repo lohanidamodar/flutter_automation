@@ -49,3 +49,31 @@ void writeStringToFile(String path, String contents) {
 List<String> getFileAsLines(String path) {
   return File(path).readAsLinesSync();
 }
+
+
+
+void copyFilesRecursive(String from, String to, {String renameBaseDir}) {
+  Process.run("cp", ["-r",  from, to],).then((res){
+    stdout.write(res.stdout);
+    stderr.write(res.stderr);
+    if(renameBaseDir != null) {
+      renameStockFiles(renameBaseDir);
+    }
+    stdout.writeln("copied stock files");
+  });
+}
+
+void renameStockFiles(String basedir) {
+  Directory dir = Directory(basedir);
+  List<FileSystemEntity> files = dir.listSync(recursive: true);
+  files.forEach((file){
+    if(file is File) {
+      String filename = path.basename(file.path);
+      if(filename.substring(filename.length-5,filename.length)==".temp") {
+        String newFilename = filename.substring(0,filename.length - 5);
+        file.renameSync(path.dirname(file.path) + path.separator + newFilename);
+      }
+    }
+  });
+  stdout.writeln("renamed stock files");
+}
