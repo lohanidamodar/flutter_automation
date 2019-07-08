@@ -15,7 +15,8 @@ Map<String,dynamic> defaultConfig = {
     "firebase_auth":"^0.11.1+7",
     "google_sign_in":"^4.0.2",
     "provider":"^3.0.0+1",
-    "google_maps":"^0.5.19"
+    "google_maps":"^0.5.19",
+    "firestore": "^0.12.6"
   },
   "google_services": "4.2.0"
 };
@@ -55,11 +56,14 @@ List<String> getFileAsLines(String path) {
 void copyFilesRecursive(String from, String to, {String renameBaseDir}) {
   Process.run("cp", ["-r",  from, to],).then((res){
     stdout.write(res.stdout);
-    stderr.write(res.stderr);
-    if(renameBaseDir != null) {
-      renameStockFiles(renameBaseDir);
+    if(res.stderr.toString().isNotEmpty) {
+      stderr.write(res.stderr);
+    }else{
+      if(renameBaseDir != null) {
+        renameStockFiles(renameBaseDir);
+      }
+      stdout.writeln("copied stock files");
     }
-    stdout.writeln("copied stock files");
   });
 }
 
