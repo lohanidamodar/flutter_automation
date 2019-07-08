@@ -68,6 +68,6 @@ void upgradeToAndroidX() {
 }
 
 void copyStockFiles() {
-  String stockPath = "${commons.scriptRoot}/lib/auth_stock/lib";
-  commons.copyFilesRecursive(stockPath, './', renameBaseDir: './lib');
+  String stockPath = "${commons.scriptRoot}${path.separator}lib${path.separator}auth_stock${path.separator}lib";
+  commons.copyFilesRecursive(stockPath, '.${path.separator}', renameBaseDir: '.${path.separator}lib');
 }
