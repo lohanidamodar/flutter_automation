@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../res/db_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../model/note.dart';
+import '../../../modelCrud/note.dart';
 
 class NotesHomePage extends StatelessWidget {
   final auth = FirebaseAuth.instance;

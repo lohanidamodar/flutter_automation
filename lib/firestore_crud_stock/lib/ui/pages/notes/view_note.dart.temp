@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../model/note.dart';
+import '../../../modelCrud/note.dart';
 
 class NoteDetailsPage extends StatelessWidget {
   final Note note;

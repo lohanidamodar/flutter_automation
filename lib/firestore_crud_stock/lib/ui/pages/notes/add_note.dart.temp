@@ -1,6 +1,6 @@
 import 'package:automationtest/res/db_provider.dart';
 import 'package:flutter/material.dart';
-import '../../../model/note.dart';
+import '../../../modelCrud/note.dart';
 
 class AddNotePage extends StatefulWidget {
   final Note note;
