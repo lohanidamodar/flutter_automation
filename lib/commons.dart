@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 import 'package:path/path.dart' as path;
 
-String scriptRoot = path.dirname(Platform.script.toFilePath()) + "/../";
+String scriptRoot = path.dirname(Platform.script.toFilePath()) + "${path.separator}..";
 
 const String pubspecPath = './pubspec.yaml';
 const String stringsPath = "./android/app/src/main/res/values/strings.xml";

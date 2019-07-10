@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'commons.dart' as commons;
+import 'package:path/path.dart' as path;
 
 void firestoreCrud() {
   addFirestorePlugin();
@@ -34,6 +35,6 @@ void enableMultidex() {
 
 void copyStockFiles() {
   commons.copyFilesRecursive(
-      '${commons.scriptRoot}/lib/firestore_crud_stock/lib', './',
-      renameBaseDir: './lib');
+      '${commons.scriptRoot}${path.separator}lib${path.separator}firestore_crud_stock${path.separator}lib', '.${path.separator}',
+      renameBaseDir: '.${path.separator}lib');
 }
