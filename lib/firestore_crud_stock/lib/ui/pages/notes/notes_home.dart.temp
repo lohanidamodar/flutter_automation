@@ -1,5 +1,5 @@
-import 'package:automationtest/ui/pages/notes/add_note.dart';
-import 'package:automationtest/ui/pages/notes/view_note.dart';
+import 'add_note.dart';
+import 'view_note.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../res/db_provider.dart';

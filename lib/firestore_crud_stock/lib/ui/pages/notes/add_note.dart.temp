@@ -1,4 +1,4 @@
-import 'package:automationtest/res/db_provider.dart';
+import '../../../res/db_provider.dart';
 import 'package:flutter/material.dart';
 import '../../../model/note.dart';
 
