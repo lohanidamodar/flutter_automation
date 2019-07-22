@@ -5,3 +5,6 @@
 
 ## [1.2.0] - Firestore CRUD boilerplate
 * Firestore CRUD boilerplate automation
+
+## [1.2.1]
+* fixing bugs
