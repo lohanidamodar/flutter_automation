@@ -8,3 +8,7 @@
 
 ## [1.2.1]
 * fixing bugs
+
+## [1.2.2]
+* Upgrading plugins to latest versions
+* Adding api documentation
