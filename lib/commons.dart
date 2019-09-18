@@ -12,11 +12,11 @@ const String projectBuildPath = "./android/build.gradle";
 
 Map<String, dynamic> defaultConfig = {
   "plugins": {
-    "firebase_auth": "^0.11.1+7",
-    "google_sign_in": "^4.0.2",
-    "provider": "^3.0.0+1",
-    "google_maps": "^0.5.19",
-    "firestore": "^0.12.6"
+    "firebase_auth": "^0.14.0+5",
+    "google_sign_in": "^4.0.7",
+    "provider": "^3.1.0",
+    "google_maps": "^0.5.21+2",
+    "firestore": "^0.12.9+4"
   },
   "google_services": "4.2.0"
 };
