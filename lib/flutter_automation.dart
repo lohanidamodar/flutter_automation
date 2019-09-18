@@ -8,6 +8,7 @@ import './google_maps.dart' as google_maps;
 import './android_signing.dart' as android_sign;
 import './firestore_crud.dart' as firestore_crud;
 
+/// deciphers which scripts to run based on the arguments provided by the user
 void decipherScript(List<String> arguments) {
   var parser = ArgParser(allowTrailingOptions: true);
   parser.addFlag('help', abbr: 'h', negatable: false, help: "Usage help");

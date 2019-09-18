@@ -7,12 +7,14 @@ String keyPass;
 String keystorePass;
 const String keyPropertiesPath = "./android/key.properties";
 
+/// Main function that uses other helper functions to setup android signing
 void androidSign() {
   generateKeystore();
   createKeyProperties();
   configureBuildConfig();
 }
 
+/// Generates the keystore with the given settings
 void generateKeystore() {
   String defDname =
       "CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP";
@@ -66,6 +68,7 @@ void generateKeystore() {
   stdout.writeln("generated keystore with provided input");
 }
 
+/// Creates key.properties file required by signing config in build.gradle file
 void createKeyProperties() {
   commons.writeStringToFile(keyPropertiesPath, """storePassword=$keystorePass
 keyPassword=$keyPass
@@ -75,6 +78,7 @@ storeFile=../../$keystorePath
   stdout.writeln("key properties file created");
 }
 
+/// configures build.gradle with release config with the generated key details
 void configureBuildConfig() {
   List<String> buildfile = commons.getFileAsLines(commons.appBuildPath);
   buildfile = buildfile.map((line) {

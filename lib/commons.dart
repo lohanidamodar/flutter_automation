@@ -9,7 +9,7 @@ const String stringsPath = "./android/app/src/main/res/values/strings.xml";
 const String manifestPath = "./android/app/src/main/AndroidManifest.xml";
 const String appBuildPath = "./android/app/build.gradle";
 const String projectBuildPath = "./android/build.gradle";
-
+/// Default plugin versions
 Map<String, dynamic> defaultConfig = {
   "plugins": {
     "firebase_auth": "^0.14.0+5",
@@ -21,6 +21,7 @@ Map<String, dynamic> defaultConfig = {
   "google_services": "4.2.0"
 };
 
+/// Loads config either from the flutter_automation.yaml config file or default config
 Map<String, dynamic> loadConfig() {
   if (!File("./flutter_automation.yaml").existsSync()) return defaultConfig;
   String configcontent = File("./flutter_automation.yaml").readAsStringSync();
@@ -28,29 +29,35 @@ Map<String, dynamic> loadConfig() {
   return Map<String, dynamic>.from(configFile);
 }
 
+/// Adds provided dependencies to pubspec.yaml file
 void addDependencise(String dependencies) {
   replaceFirstStringInfile(
       pubspecPath, "dev_dependencies:", "$dependencies\ndev_dependencies:");
 }
 
+/// replace string in a file at [path] from [from] to [to]
 void replaceFirstStringInfile(String path, Pattern from, String to) {
   String contents = getFileAsString(path);
   contents = contents.replaceFirst(from, to);
   writeStringToFile(path, contents);
 }
 
+/// Reads a file at [path] as string
 String getFileAsString(String path) {
   return File(path).readAsStringSync();
 }
 
+/// writes a string [contents] to a file at [path]
 void writeStringToFile(String path, String contents) {
   File(path).writeAsStringSync(contents);
 }
 
+/// Reads a file at [path] as a list of lines
 List<String> getFileAsLines(String path) {
   return File(path).readAsLinesSync();
 }
 
+/// Copies files recursively from [from] directory to [to] directory
 void copyFilesRecursive(String from, String to, {String renameBaseDir}) {
   Process.run(
     "cp",
@@ -68,6 +75,7 @@ void copyFilesRecursive(String from, String to, {String renameBaseDir}) {
   });
 }
 
+/// Renames all stock files in [basedir]
 void renameStockFiles(String basedir) {
   Directory dir = Directory(basedir);
   List<FileSystemEntity> files = dir.listSync(recursive: true);
