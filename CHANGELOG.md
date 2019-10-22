@@ -12,3 +12,7 @@
 ## [1.2.2]
 * Upgrading plugins to latest versions
 * Adding api documentation
+
+## [1.3.0]
+* Always get the latest version of plugin using the pub.dev API
+* If the http request fails, it still adds the preset default version of the plugins
