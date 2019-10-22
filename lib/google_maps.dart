@@ -1,19 +1,23 @@
 import 'dart:io';
+import 'package:flutter_automation/pubspec_api.dart';
+
 import './commons.dart' as commons;
 
 /// Main google maps setup plugin
-void googleMaps() {
-  addGoogleMap();
+void googleMaps() async {
+  await addGoogleMap();
   setupApiKey();
   addKeyToManifest();
   stdout.writeln("google maps successfully setup");
 }
 
 /// adds google maps dependency to pubspec.yaml file
-void addGoogleMap() {
-  String googleMapsPlugin =
-      "  google_maps_flutter: ${commons.loadConfig()['plugins']['google_maps']}";
-  commons.addDependencise(googleMapsPlugin);
+Future<void> addGoogleMap() async{
+  String plugin = await PubspecAPI().getPackage('google_maps_flutter');
+  if(plugin==null)
+  plugin =
+      "google_maps_flutter: ${commons.loadConfig()['plugins']['google_maps']}";
+  commons.addDependencise("  $plugin");
   stdout.writeln("added google maps plugin to pubspec");
 }
 

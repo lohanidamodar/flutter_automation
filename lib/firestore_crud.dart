@@ -1,26 +1,33 @@
 import 'dart:io';
 
+import 'package:flutter_automation/pubspec_api.dart';
+
 import 'commons.dart' as commons;
 import 'package:path/path.dart' as path;
 
 /// main firestore CRUD setup function to setup firestore CRUD boilerplate
-void firestoreCrud() {
-  addFirestorePlugin();
+void firestoreCrud() async {
+  await addFirestorePlugin();
   enableMultidex();
   copyStockFiles();
 }
 
 /// adds cloud_firestore plugin to pubspec.yaml file
-void addFirestorePlugin() {
+Future<void> addFirestorePlugin() async {
   String pubspec = commons.getFileAsString(commons.pubspecPath);
-  String plugin =
-      "  cloud_firestore: ${commons.loadConfig()['plugins']['firestore']}";
+  String plugin = await PubspecAPI().getPackage("cloud_firestore");
+  if(plugin == null)
+  plugin =
+      "cloud_firestore: ${commons.loadConfig()['plugins']['firestore']}";
+  commons.addDependencise("  $plugin");
   if (!pubspec.contains("provider")) {
+    plugin = null;
+    plugin = await PubspecAPI().getPackage("provider");
+    if(plugin==null)
     plugin =
         "$plugin\n  provider: ${commons.loadConfig()['plugins']['provider']}";
+    commons.addDependencise("  $plugin");
   }
-  commons.addDependencise(
-      "  cloud_firestore: ${commons.loadConfig()['plugins']['firestore']}");
   stdout.writeln("cloud firestore dependencies added");
 }
 

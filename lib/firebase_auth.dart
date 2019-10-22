@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
+import './pubspec_api.dart';
 
 import './commons.dart' as commons;
 
@@ -8,24 +9,27 @@ Map<String, dynamic> config = commons.loadConfig();
 const String gradlePropertiesPath = "./android/gradle.properties";
 
 /// Main firebase auth script function that setups firebase authentication with the help of other functions
-void firebaseAuth() {
+void firebaseAuth() async {
   upgradeToAndroidX();
-  addDependencise();
+  await addDependencise();
   addGoogleService();
   copyStockFiles();
   stdout.write("firebase auth implemented\n");
 }
 
 /// Adds firebase auth related dependencies to the pubspec.yaml file
-void addDependencise() {
+Future<void> addDependencise() async {
   String pubspec = commons.getFileAsString(commons.pubspecPath);
   plugins = plugins.where((plugin) {
     return !pubspec.contains(plugin);
   }).toList();
-  plugins = plugins.map((plugin) {
-    return "  $plugin: ${config['plugins'][plugin]}";
-  }).toList();
-  String content = plugins.join("\n");
+  List<String> latest = [];
+  for(var i = 0; i<plugins.length; i++) {
+    String plugin = plugins[i];
+    String plug = await PubspecAPI().getPackage(plugin);
+    latest.add(plug != null ? "  $plug" : "  $plugin: ${config['plugins'][plugin]}");
+  }
+  String content = latest.join("\n");
   commons.addDependencise(content);
   stdout.writeln("added dependencies");
 }
