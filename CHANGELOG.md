@@ -16,3 +16,8 @@
 ## [1.3.0]
 * Always get the latest version of plugin using the pub.dev API
 * If the http request fails, it still adds the preset default version of the plugins
+
+## [1.3.1]
+* Authentication now supports Signup
+* Authentication UIs updated
+* Authentication now properly displays auth errors in snackbar
