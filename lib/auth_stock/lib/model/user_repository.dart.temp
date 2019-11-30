@@ -9,13 +9,16 @@ class UserRepository with ChangeNotifier {
   FirebaseUser _user;
   GoogleSignIn _googleSignIn;
   Status _status = Status.Uninitialized;
+  String _error;
 
   UserRepository.instance()
       : _auth = FirebaseAuth.instance,
         _googleSignIn = GoogleSignIn() {
+          _error = '';
     _auth.onAuthStateChanged.listen(_onAuthStateChanged);
   }
 
+  String get error => _error;
   Status get status => _status;
   FirebaseUser get user => _user;
 
@@ -24,8 +27,25 @@ class UserRepository with ChangeNotifier {
       _status = Status.Authenticating;
       notifyListeners();
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      _error = '';
       return true;
     } catch (e) {
+      _error = e.message;
+      _status = Status.Unauthenticated;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> signup(String email,String password) async {
+    try {
+      _status = Status.Authenticating;
+      notifyListeners();
+      await _auth.createUserWithEmailAndPassword(email: email,password: password);
+      _error = '';
+      return true;
+    }catch(e) {
+      _error = e.message;
       _status = Status.Unauthenticated;
       notifyListeners();
       return false;
@@ -44,9 +64,10 @@ class UserRepository with ChangeNotifier {
         idToken: googleAuth.idToken,
       );
       await _auth.signInWithCredential(credential);
+      _error = '';
       return true;
     } catch (e) {
-      print(e);
+      _error=e.message;
       _status = Status.Unauthenticated;
       notifyListeners();
       return false;

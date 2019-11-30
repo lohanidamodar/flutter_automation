@@ -5,7 +5,7 @@ import './splash.dart';
 import './login.dart';
 import './user_info.dart';
 
-class HomePage extends StatelessWidget {
+class AuthHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
               return Splash();
             case Status.Unauthenticated:
             case Status.Authenticating:
-              return LoginPage();
+              return WelcomePage();
             case Status.Authenticated:
               return UserInfoPage(user: user.user);
           }

@@ -1,131 +1,147 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../model/user_repository.dart';
+import '../widgets/auth_dialog.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
+class WelcomePage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _WelcomePageState createState() => _WelcomePageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  TextEditingController _email;
-  TextEditingController _password;
-  final _formKey = GlobalKey<FormState>();
-  final _key = GlobalKey<ScaffoldState>();
+class _WelcomePageState extends State<WelcomePage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  bool _authVisible;
+  int _selectedTab;
 
   @override
   void initState() {
     super.initState();
-    _email = TextEditingController(text: "");
-    _password = TextEditingController(text: "");
+    _authVisible = false;
+    _selectedTab = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserRepository>(context);
+    UserRepository user = Provider.of<UserRepository>(context);
     return Scaffold(
       key: _key,
-      body: Form(
-        key: _formKey,
-        child: Container(
-          alignment: Alignment.center,
-          child: ListView(
-            shrinkWrap: true,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade800,
+            ),
+            width: double.infinity,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: TextFormField(
-                  controller: _email,
-                  validator: (value) =>
-                      (value.isEmpty) ? "Please Enter Email" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      labelText: "Email",
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
-                ),
+              const SizedBox(height: kToolbarHeight),
+              Text(
+                "Welcome",
+                style: Theme.of(context).textTheme.display2.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: "Frank"),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: TextFormField(
-                  controller: _password,
-                  obscureText: true,
-                  validator: (value) =>
-                      (value.isEmpty) ? "Please Enter Password" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      labelText: "Password",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
-                ),
+              Text(
+                "Our awesome login app",
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
-              SizedBox(height: 10.0),
-              user.status == Status.Authenticating
-                  ? Center(child: CircularProgressIndicator())
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Material(
-                        elevation: 5.0,
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Theme.of(context).primaryColor,
-                        child: MaterialButton(
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              if (!await user.signIn(
-                                  _email.text, _password.text))
-                                _key.currentState.showSnackBar(SnackBar(
-                                  content: Text("Something is wrong"),
-                                ));
-                            }
-                          },
-                          child: Text(
-                            "Sign In",
-                            style: style.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
+              const SizedBox(height: 40.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        elevation: 0,
+                        highlightElevation: 0,
+                        child: Text("Login"),
+                        onPressed: () => setState(() {
+                          _authVisible = true;
+                          _selectedTab = 0;
+                        }),
                       ),
                     ),
-              SizedBox(height: 10),
-              user.status == Status.Authenticating
-                  ? Center(child: CircularProgressIndicator())
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Material(
-                        elevation: 5.0,
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.red,
-                        child: MaterialButton(
-                          onPressed: () async {
-                            if (!await user.signInWithGoogle())
-                              _key.currentState.showSnackBar(SnackBar(
-                                content: Text("Something is wrong"),
-                              ));
-                          },
-                          child: Text(
-                            "Sign In With Google",
-                            style: style.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                      child: OutlineButton(
+                        textColor: Colors.white,
+                        child: Text("Signup"),
+                        onPressed: () => setState(() {
+                          _authVisible = true;
+                          _selectedTab = 1;
+                        }),
+                        borderSide: BorderSide(color: Colors.white),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50.0),
+              OutlineButton(
+                textColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                borderSide: BorderSide(color: Colors.red),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text("Continue with Google"),
+                    const SizedBox(width: 10.0),
+                    Text("G"),
+                  ],
+                ),
+                onPressed: () async {
+                  if (!await user.signInWithGoogle())
+                    _key.currentState.showSnackBar(SnackBar(
+                      content: Text("Something is wrong"),
+                    ));
+                },
+              ),
+              OutlineButton(
+                textColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                borderSide: BorderSide(color: Colors.white),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text("Skip login"),
+                    const SizedBox(width: 10.0),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 16.0,
+                    ),
+                  ],
+                ),
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10.0),
             ],
           ),
-        ),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: _authVisible
+                ? Container(
+                    color: Colors.black54,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: AuthDialog(
+                        selectedTab: _selectedTab,
+                        onClose: () {
+                          setState(() {
+                            _authVisible = false;
+                          });
+                        },
+                      ),
+                    ),
+                  )
+                : null,
+          )
+        ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _email.dispose();
-    _password.dispose();
-    super.dispose();
   }
 }
