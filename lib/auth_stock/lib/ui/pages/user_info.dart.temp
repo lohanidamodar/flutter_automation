@@ -20,7 +20,7 @@ class UserInfoPage extends StatelessWidget {
             Text(user.email),
             RaisedButton(
               child: Text("SIGN OUT"),
-              onPressed: () => Provider.of<UserRepository>(context).signOut(),
+              onPressed: () => Provider.of<UserRepository>(context,listen:false).signOut(),
             )
           ],
         ),

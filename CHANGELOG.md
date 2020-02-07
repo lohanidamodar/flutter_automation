@@ -21,3 +21,6 @@
 * Authentication now supports Signup
 * Authentication UIs updated
 * Authentication now properly displays auth errors in snackbar
+
+## [1.3.2]
+* Auth mock files updated to work with latest version of provider library
