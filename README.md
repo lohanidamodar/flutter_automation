@@ -1,6 +1,9 @@
 # Flutter Automation
 This package contains various automation scripts that will help you automate various aspects of your flutter project.
 
+[![Pub Package](https://img.shields.io/pub/v/flutter_automation.svg?style=flat-square)](https://pub.dartlang.org/packages/flutter_automation)
+
+
 ## Usage
 To use this plugin, add `flutter_automation` as a [dependency in your pubspec.yaml file](https://flutter.io/docs/development/packages-and-plugins/using-packages).
 
