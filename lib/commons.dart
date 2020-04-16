@@ -18,7 +18,7 @@ Map<String, dynamic> defaultConfig = {
     "google_maps": "^0.5.21+2",
     "firestore": "^0.12.9+4"
   },
-  "google_services": "4.2.0"
+  "google_services": "4.3.3"
 };
 
 /// Loads config either from the flutter_automation.yaml config file or default config

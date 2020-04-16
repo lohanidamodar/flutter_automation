@@ -1,3 +1,9 @@
+## 1.3.3
+* Google services version upgraded
+
+## [1.3.2]
+* Auth mock files updated to work with latest version of provider library
+
 ## [1.1.4] - Changes in stock files
 * Bug fixing
 * Certain validations
@@ -21,6 +27,3 @@
 * Authentication now supports Signup
 * Authentication UIs updated
 * Authentication now properly displays auth errors in snackbar
-
-## [1.3.2]
-* Auth mock files updated to work with latest version of provider library

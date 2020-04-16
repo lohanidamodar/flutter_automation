@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_automation/firebase_auth.dart';
 import 'package:flutter_automation/pubspec_api.dart';
 
 import 'commons.dart' as commons;
@@ -10,6 +11,8 @@ void firestoreCrud() async {
   await addFirestorePlugin();
   enableMultidex();
   copyStockFiles();
+  upgradeToAndroidX();
+  addGoogleService();
 }
 
 /// adds cloud_firestore plugin to pubspec.yaml file
