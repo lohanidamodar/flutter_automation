@@ -80,37 +80,43 @@ storeFile=../../$keystorePath
 
 /// configures build.gradle with release config with the generated key details
 void configureBuildConfig() {
+  String bfString = commons.getFileAsString(commons.appBuildPath);
   List<String> buildfile = commons.getFileAsLines(commons.appBuildPath);
-  buildfile = buildfile.map((line) {
-    if (line.contains(RegExp("android.*{"))) {
-      return """
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
-android {
-            """;
-    } else if (line.contains(RegExp("buildTypes.*{"))) {
-      return """
-  signingConfigs {
-      release {
-          keyAlias keystoreProperties['keyAlias']
-          keyPassword keystoreProperties['keyPassword']
-          storeFile file(keystoreProperties['storeFile'])
-          storePassword keystoreProperties['storePassword']
-      }
+  if (!bfString.contains("deft keystoreProperties") &&
+      !bfString.contains("keystoreProperties['keyAlias']")) {
+    buildfile = buildfile.map((line) {
+      if (line.contains(RegExp("android.*{"))) {
+        return """
+  def keystoreProperties = new Properties()
+  def keystorePropertiesFile = rootProject.file('key.properties')
+  if (keystorePropertiesFile.exists()) {
+      keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
   }
-  buildTypes {
-            """;
-    } else if (line.contains("signingConfig signingConfigs.debug")) {
-      return "            signingConfig signingConfigs.release";
-    } else {
-      return line;
-    }
-  }).toList();
 
-  commons.writeStringToFile(commons.appBuildPath, buildfile.join("\n"));
-  stdout.writeln("configured release configs");
+  android {
+              """;
+      } else if (line.contains(RegExp("buildTypes.*{"))) {
+        return """
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+              """;
+      } else if (line.contains("signingConfig signingConfigs.debug")) {
+        return "            signingConfig signingConfigs.release";
+      } else {
+        return line;
+      }
+    }).toList();
+
+    commons.writeStringToFile(commons.appBuildPath, buildfile.join("\n"));
+    stdout.writeln("configured release configs");
+  } else {
+    stdout.writeln("release configs already configured");
+  }
 }
