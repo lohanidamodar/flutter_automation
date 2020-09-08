@@ -37,8 +37,12 @@ void decipherScript(List<String> arguments) async {
       abbr: "p",
       help: "Base path, defaults to ${_Commons.basePath}",
       defaultsTo: _Commons.basePath);
-  genParser.addFlag("core",
-      abbr: "c", help: "Generates core directory instead of feature directory");
+  genParser.addFlag(
+    "core",
+    abbr: "c",
+    help: "Generates core directory instead of feature directory",
+    negatable: false,
+  );
 
   var argResults = parser.parse(arguments);
   if (argResults.command?.name == "gen") {
@@ -55,6 +59,11 @@ void decipherScript(List<String> arguments) async {
   if (argResults['help'] || argResults.arguments.length < 1) {
     stdout.write('Automation scripts for flutter');
     stdout.write(parser.usage);
+    stdout.writeln("\n");
+    stdout.writeln(
+        "[Command: gen] - flutter pub run flutter_automation gen <options>");
+    stdout.writeln("Options:");
+    stdout.writeln(genParser.usage);
     return;
   }
 
