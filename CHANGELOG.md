@@ -1,3 +1,8 @@
+## 1.4.0
+* Have added `gen` command to generate directory and common files for a modified tdd structure
+* Fixed adding multiple instance of plugins if already exists
+* Made all functions private
+
 ## 1.3.3
 * Google services version upgraded
 

@@ -1,45 +1,41 @@
-import 'dart:io';
-import 'package:path/path.dart' as path;
-import './pubspec_api.dart';
-
-import './commons.dart' as commons;
+part of flutter_automation;
 
 List<String> plugins = ["firebase_auth", "provider", "google_sign_in"];
-Map<String, dynamic> config = commons.loadConfig();
+Map<String, dynamic> config = _Commons.loadConfig();
 const String gradlePropertiesPath = "./android/gradle.properties";
 
 /// Main firebase auth script function that setups firebase authentication with the help of other functions
-void firebaseAuth() async {
-  upgradeToAndroidX();
-  await addDependencise();
-  addGoogleService();
-  copyStockFiles();
+Future<void> _firebaseAuth() async {
+  _upgradeToAndroidX();
+  await _addDependencise();
+  _addGoogleService();
+  _copyStockFiles();
   stdout.write("firebase auth implemented\n");
 }
 
 /// Adds firebase auth related dependencies to the pubspec.yaml file
-Future<void> addDependencise() async {
-  String pubspec = commons.getFileAsString(commons.pubspecPath);
+Future<void> _addDependencise() async {
   plugins = plugins.where((plugin) {
-    return !pubspec.contains(plugin);
+    return !_Commons.pluginExists(plugin);
   }).toList();
   List<String> latest = [];
-  for(var i = 0; i<plugins.length; i++) {
+  for (var i = 0; i < plugins.length; i++) {
     String plugin = plugins[i];
-    String plug = await PubspecAPI().getPackage(plugin);
-    latest.add(plug != null ? "  $plug" : "  $plugin: ${config['plugins'][plugin]}");
+    String plug = await _PubspecAPI().getPackage(plugin);
+    latest.add(
+        plug != null ? "  $plug" : "  $plugin: ${config['plugins'][plugin]}");
   }
   String content = latest.join("\n");
-  commons.addDependencise(content);
+  _Commons.addDependencise(content);
   stdout.writeln("added dependencies");
 }
 
 /// adds google services configuration to build.gradle files
-void addGoogleService() {
-  String pbuild = commons.getFileAsString(commons.projectBuildPath);
+void _addGoogleService() {
+  String pbuild = _Commons.getFileAsString(_Commons.projectBuildPath);
   if (!pbuild.contains("com.google.gms:google-services")) {
-    commons.replaceFirstStringInfile(
-        commons.projectBuildPath,
+    _Commons.replaceFirstStringInfile(
+        _Commons.projectBuildPath,
         RegExp("dependencies.*{"),
         "dependencies {\n        classpath 'com.google.gms:google-services:${config['google_services']}'\n");
     stdout.writeln("added google services");
@@ -47,15 +43,15 @@ void addGoogleService() {
 }
 
 /// upgrades project to androidx if not already
-void upgradeToAndroidX() {
-  String properties = commons.getFileAsString(gradlePropertiesPath);
+void _upgradeToAndroidX() {
+  String properties = _Commons.getFileAsString(gradlePropertiesPath);
   if (!properties.contains("android.useAndroidX")) {
     properties =
         "$properties\n\nandroid.enableJetifier=true\nandroid.useAndroidX=true\n";
-    commons.writeStringToFile(gradlePropertiesPath, properties);
+    _Commons.writeStringToFile(gradlePropertiesPath, properties);
   }
 
-  List<String> contents = commons.getFileAsLines(commons.appBuildPath);
+  List<String> contents = _Commons.getFileAsLines(_Commons.appBuildPath);
   contents = contents.map((line) {
     if (line.contains("testInstrumentationRunner"))
       return "        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n";
@@ -69,13 +65,22 @@ void upgradeToAndroidX() {
       return line;
   }).toList();
   String content = contents.join("\n");
-  content = "$content\napply plugin: 'com.google.gms.google-services'\n";
-  commons.writeStringToFile(commons.appBuildPath, content);
+
+  if (!_Commons.fileContainsString(
+    _Commons.appBuildPath,
+    "com.google.gms.google-services",
+  )) {
+    content = "$content\napply plugin: 'com.google.gms.google-services'\n";
+  }
+
+  _Commons.writeStringToFile(_Commons.appBuildPath, content);
   stdout.write("upgraded to androidx\n");
 }
 
 /// copies stock files related to firebase authentication
-void copyStockFiles() {
-  String stockPath = "${commons.scriptRoot}${path.separator}lib${path.separator}auth_stock${path.separator}lib";
-  commons.copyFilesRecursive(stockPath, '.${path.separator}', renameBaseDir: '.${path.separator}lib');
+void _copyStockFiles() {
+  String stockPath =
+      "${_Commons.scriptRoot}${path.separator}lib${path.separator}auth_stock${path.separator}lib";
+  _Commons.copyFilesRecursive(stockPath, '.${path.separator}',
+      renameBaseDir: '.${path.separator}lib');
 }
