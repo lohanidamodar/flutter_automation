@@ -1,7 +1,7 @@
 part of flutter_automation;
 
 /// Main google maps setup plugin
-void googleMaps() async {
+Future<void> googleMaps() async {
   await addGoogleMap();
   setupApiKey();
   addKeyToManifest();

@@ -5,7 +5,7 @@ Map<String, dynamic> config = _Commons.loadConfig();
 const String gradlePropertiesPath = "./android/gradle.properties";
 
 /// Main firebase auth script function that setups firebase authentication with the help of other functions
-void _firebaseAuth() async {
+Future<void> _firebaseAuth() async {
   _upgradeToAndroidX();
   await _addDependencise();
   _addGoogleService();

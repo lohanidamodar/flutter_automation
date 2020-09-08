@@ -1,7 +1,7 @@
 part of flutter_automation;
 
 /// main firestore CRUD setup function to setup firestore CRUD boilerplate
-void _firestoreCrud() async {
+Future<void> _firestoreCrud() async {
   await _addFirestorePlugin();
   _enableMultidex();
   _copyFirestoreStock();

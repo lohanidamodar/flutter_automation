@@ -18,7 +18,7 @@ part './gen/helper.dart';
 
 /// Deciphers which scripts to run based on the arguments provided by the user
 /// Use `flutter pub pub run flutter_automation -h` to get help
-void decipherScript(List<String> arguments) {
+void decipherScript(List<String> arguments) async {
   var parser = ArgParser(allowTrailingOptions: true);
   parser.addFlag('help', abbr: 'h', negatable: false, help: "Usage help");
   parser.addFlag('firebase-auth',
@@ -59,18 +59,18 @@ void decipherScript(List<String> arguments) {
   }
 
   if (argResults['firebase-auth']) {
-    _firebaseAuth();
+    await _firebaseAuth();
   }
 
   if (argResults['google-maps']) {
-    googleMaps();
+    await googleMaps();
+  }
+
+  if (argResults['firestore-crud']) {
+    await _firestoreCrud();
   }
 
   if (argResults['android-sign']) {
     _androidSign();
-  }
-
-  if (argResults['firestore-crud']) {
-    _firestoreCrud();
   }
 }
