@@ -1,6 +1,6 @@
-import 'dart:io';
+part of flutter_automation;
 
-void genFeatureDirectory({String path, String feature}) {
+void _genFeatureDirectory({String path, String feature}) {
   _genBaseDirs("$path/features/$feature");
 }
 
@@ -17,7 +17,7 @@ void _genBaseDirs(String path) {
   stdout.writeln("resource directory created");
 }
 
-void genCore({String path}) {
+void _genCore({String path}) {
   final core = "$path/core";
   _genBaseDirs(core);
   final dbConstants = File("$core/res/db_constants.dart");

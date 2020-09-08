@@ -1,5 +1,4 @@
-import 'dart:io';
-import './commons.dart' as commons;
+part of flutter_automation;
 
 String alias;
 String keystorePath = "keys/keystore.jks";
@@ -8,14 +7,14 @@ String keystorePass;
 const String keyPropertiesPath = "./android/key.properties";
 
 /// Main function that uses other helper functions to setup android signing
-void androidSign() {
-  generateKeystore();
-  createKeyProperties();
-  configureBuildConfig();
+void _androidSign() {
+  _generateKeystore();
+  _createKeyProperties();
+  _configureBuildConfig();
 }
 
 /// Generates the keystore with the given settings
-void generateKeystore() {
+void _generateKeystore() {
   String defDname =
       "CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP";
 
@@ -69,8 +68,8 @@ void generateKeystore() {
 }
 
 /// Creates key.properties file required by signing config in build.gradle file
-void createKeyProperties() {
-  commons.writeStringToFile(keyPropertiesPath, """storePassword=$keystorePass
+void _createKeyProperties() {
+  _Commons.writeStringToFile(keyPropertiesPath, """storePassword=$keystorePass
 keyPassword=$keyPass
 keyAlias=$alias
 storeFile=../../$keystorePath
@@ -79,9 +78,9 @@ storeFile=../../$keystorePath
 }
 
 /// configures build.gradle with release config with the generated key details
-void configureBuildConfig() {
-  String bfString = commons.getFileAsString(commons.appBuildPath);
-  List<String> buildfile = commons.getFileAsLines(commons.appBuildPath);
+void _configureBuildConfig() {
+  String bfString = _Commons.getFileAsString(_Commons.appBuildPath);
+  List<String> buildfile = _Commons.getFileAsLines(_Commons.appBuildPath);
   if (!bfString.contains("deft keystoreProperties") &&
       !bfString.contains("keystoreProperties['keyAlias']")) {
     buildfile = buildfile.map((line) {
@@ -114,7 +113,7 @@ void configureBuildConfig() {
       }
     }).toList();
 
-    commons.writeStringToFile(commons.appBuildPath, buildfile.join("\n"));
+    _Commons.writeStringToFile(_Commons.appBuildPath, buildfile.join("\n"));
     stdout.writeln("configured release configs");
   } else {
     stdout.writeln("release configs already configured");

@@ -1,17 +1,24 @@
 library flutter_automation;
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:flutter_automation/commons.dart';
-import 'package:flutter_automation/directory_helper/helper.dart';
-import './firebase_auth.dart' as firebase_auth;
-import './google_maps.dart' as google_maps;
-import './android_signing.dart' as android_sign;
-import './firestore_crud.dart' as firestore_crud;
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:yaml/yaml.dart';
 
-/// deciphers which scripts to run based on the arguments provided by the user
-void decipherScript(List<String> arguments) {
+part './firebase_auth.dart';
+part './google_maps.dart';
+part './android_signing.dart';
+part './firestore_crud.dart';
+part './pubspec_api.dart';
+part './commons.dart';
+part './gen/helper.dart';
+
+/// Deciphers which scripts to run based on the arguments provided by the user
+/// Use `flutter pub pub run flutter_automation -h` to get help
+void decipherScript(List<String> arguments) async {
   var parser = ArgParser(allowTrailingOptions: true);
   parser.addFlag('help', abbr: 'h', negatable: false, help: "Usage help");
   parser.addFlag('firebase-auth',
@@ -28,8 +35,8 @@ void decipherScript(List<String> arguments) {
   parser.addCommand("gen", genParser);
   genParser.addOption("path",
       abbr: "p",
-      help: "Base path, defaults to $basePath",
-      defaultsTo: basePath);
+      help: "Base path, defaults to ${_Commons.basePath}",
+      defaultsTo: _Commons.basePath);
   genParser.addFlag("core",
       abbr: "c", help: "Generates core directory instead of feature directory");
 
@@ -37,9 +44,9 @@ void decipherScript(List<String> arguments) {
   if (argResults.command?.name == "gen") {
     final genArgResults = genParser.parse(argResults.command.arguments);
     if (genArgResults["core"]) {
-      genCore(path: genArgResults["path"]);
+      _genCore(path: genArgResults["path"]);
     } else {
-      genFeatureDirectory(
+      _genFeatureDirectory(
           path: genArgResults["path"],
           feature: argResults.command.arguments.first);
     }
@@ -52,18 +59,18 @@ void decipherScript(List<String> arguments) {
   }
 
   if (argResults['firebase-auth']) {
-    firebase_auth.firebaseAuth();
+    await _firebaseAuth();
   }
 
   if (argResults['google-maps']) {
-    google_maps.googleMaps();
-  }
-
-  if (argResults['android-sign']) {
-    android_sign.androidSign();
+    await googleMaps();
   }
 
   if (argResults['firestore-crud']) {
-    firestore_crud.firestoreCrud();
+    await _firestoreCrud();
+  }
+
+  if (argResults['android-sign']) {
+    _androidSign();
   }
 }
