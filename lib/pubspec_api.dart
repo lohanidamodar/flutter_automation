@@ -1,41 +1,38 @@
-import 'dart:convert';
+part of flutter_automation;
 
-import 'package:http/http.dart' as http;
-
-class PubspecAPI {
+class _PubspecAPI {
   final String baseUrl = "https://pub.dev/api/packages/";
-  PubspecAPI();
+  _PubspecAPI();
   Future<String> getPackage(String package) async {
-    http.Response res = await http.get(baseUrl+package);
-    if(res.statusCode == 200) {
-      Map<String,dynamic> resJson = json.decode(res.body);
-      PubPackage package = PubPackage.fromMap(resJson);
+    http.Response res = await http.get(baseUrl + package);
+    if (res.statusCode == 200) {
+      Map<String, dynamic> resJson = json.decode(res.body);
+      _PubPackage package = _PubPackage.fromMap(resJson);
       return "${package.name}: ^${package.latest.version}";
-
-    }else{
+    } else {
       return null;
     }
   }
 }
 
-class PubPackage {
+class _PubPackage {
   final String name;
-  final Version latest;
+  final _Version latest;
 
-  PubPackage(this.name, this.latest);
+  _PubPackage(this.name, this.latest);
 
-  PubPackage.fromMap(Map<String,dynamic> data):
-    name=data["name"],
-    latest=Version.fromMap(data["latest"]);
+  _PubPackage.fromMap(Map<String, dynamic> data)
+      : name = data["name"],
+        latest = _Version.fromMap(data["latest"]);
 }
 
-class Version {
+class _Version {
   final String version;
   final String archiveUrl;
 
-  Version(this.version, this.archiveUrl);
+  _Version(this.version, this.archiveUrl);
 
-  Version.fromMap(Map<String,dynamic> data):
-  version = data["version"],
-  archiveUrl=data["archive_url"];
+  _Version.fromMap(Map<String, dynamic> data)
+      : version = data["version"],
+        archiveUrl = data["archive_url"];
 }
