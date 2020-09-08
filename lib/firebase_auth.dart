@@ -65,7 +65,14 @@ void _upgradeToAndroidX() {
       return line;
   }).toList();
   String content = contents.join("\n");
-  content = "$content\napply plugin: 'com.google.gms.google-services'\n";
+
+  if (!_Commons.fileContainsString(
+    _Commons.appBuildPath,
+    "com.google.gms.google-services",
+  )) {
+    content = "$content\napply plugin: 'com.google.gms.google-services'\n";
+  }
+
   _Commons.writeStringToFile(_Commons.appBuildPath, content);
   stdout.write("upgraded to androidx\n");
 }

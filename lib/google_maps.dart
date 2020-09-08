@@ -33,6 +33,10 @@ void setupApiKey() {
 
 /// writes api key meta data to app manifest file
 void addKeyToManifest() {
+  if (_Commons.fileContainsString(
+    _Commons.manifestPath,
+    "com.google.android.geo.API_KEY",
+  )) return;
   String apiKey =
       "<meta-data android:name=\"com.google.android.geo.API_KEY\" android:value=\"@string/map_api_key\"/>";
   _Commons.replaceFirstStringInfile(
