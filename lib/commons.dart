@@ -32,6 +32,11 @@ class _Commons {
     return Map<String, dynamic>.from(configFile);
   }
 
+  static bool pluginExists(String plugin) {
+    String pubspec = getFileAsString(pubspecPath);
+    return pubspec.contains("cloud_firestore");
+  }
+
   /// Adds provided dependencies to pubspec.yaml file
   static void addDependencise(String dependencies) {
     replaceFirstStringInfile(

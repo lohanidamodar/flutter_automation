@@ -11,14 +11,15 @@ void _firestoreCrud() async {
 
 /// adds cloud_firestore plugin to pubspec.yaml file
 Future<void> _addFirestorePlugin() async {
-  String pubspec = _Commons.getFileAsString(_Commons.pubspecPath);
-  String plugin = await _PubspecAPI().getPackage("cloud_firestore");
-  if (plugin == null)
-    plugin = "cloud_firestore: ${_Commons.loadConfig()['plugins']['firestore']}";
-  _Commons.addDependencise("  $plugin");
-  if (!pubspec.contains("provider")) {
-    plugin = null;
-    plugin = await _PubspecAPI().getPackage("provider");
+  if (!_Commons.pluginExists("cloud_firestore")) {
+    String plugin = await _PubspecAPI().getPackage("cloud_firestore");
+    if (plugin == null)
+      plugin =
+          "cloud_firestore: ${_Commons.loadConfig()['plugins']['firestore']}";
+    _Commons.addDependencise("  $plugin");
+  }
+  if (!_Commons.pluginExists("provider")) {
+    String plugin = await _PubspecAPI().getPackage("provider");
     if (plugin == null)
       plugin =
           "$plugin\n  provider: ${_Commons.loadConfig()['plugins']['provider']}";

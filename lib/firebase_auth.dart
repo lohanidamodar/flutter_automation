@@ -15,15 +15,15 @@ void _firebaseAuth() async {
 
 /// Adds firebase auth related dependencies to the pubspec.yaml file
 Future<void> _addDependencise() async {
-  String pubspec = _Commons.getFileAsString(_Commons.pubspecPath);
   plugins = plugins.where((plugin) {
-    return !pubspec.contains(plugin);
+    return !_Commons.pluginExists(plugin);
   }).toList();
   List<String> latest = [];
-  for(var i = 0; i<plugins.length; i++) {
+  for (var i = 0; i < plugins.length; i++) {
     String plugin = plugins[i];
     String plug = await _PubspecAPI().getPackage(plugin);
-    latest.add(plug != null ? "  $plug" : "  $plugin: ${config['plugins'][plugin]}");
+    latest.add(
+        plug != null ? "  $plug" : "  $plugin: ${config['plugins'][plugin]}");
   }
   String content = latest.join("\n");
   _Commons.addDependencise(content);
@@ -72,6 +72,8 @@ void _upgradeToAndroidX() {
 
 /// copies stock files related to firebase authentication
 void _copyStockFiles() {
-  String stockPath = "${_Commons.scriptRoot}${path.separator}lib${path.separator}auth_stock${path.separator}lib";
-  _Commons.copyFilesRecursive(stockPath, '.${path.separator}', renameBaseDir: '.${path.separator}lib');
+  String stockPath =
+      "${_Commons.scriptRoot}${path.separator}lib${path.separator}auth_stock${path.separator}lib";
+  _Commons.copyFilesRecursive(stockPath, '.${path.separator}',
+      renameBaseDir: '.${path.separator}lib');
 }
