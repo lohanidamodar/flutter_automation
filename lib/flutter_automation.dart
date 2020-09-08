@@ -3,6 +3,8 @@ library flutter_automation;
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:flutter_automation/commons.dart';
+import 'package:flutter_automation/directory_helper/helper.dart';
 import './firebase_auth.dart' as firebase_auth;
 import './google_maps.dart' as google_maps;
 import './android_signing.dart' as android_sign;
@@ -22,8 +24,27 @@ void decipherScript(List<String> arguments) {
   parser.addFlag("android-sign",
       abbr: 's', help: "Setups android signing config", negatable: false);
 
-  var argResults = parser.parse(arguments);
+  var genParser = ArgParser(allowTrailingOptions: true);
+  parser.addCommand("gen", genParser);
+  genParser.addOption("path",
+      abbr: "p",
+      help: "Base path, defaults to $basePath",
+      defaultsTo: basePath);
+  genParser.addFlag("core",
+      abbr: "c", help: "Generates core directory instead of feature directory");
 
+  var argResults = parser.parse(arguments);
+  if (argResults.command?.name == "gen") {
+    final genArgResults = genParser.parse(argResults.command.arguments);
+    if (genArgResults["core"]) {
+      genCore(path: genArgResults["path"]);
+    } else {
+      genFeatureDirectory(
+          path: genArgResults["path"],
+          feature: argResults.command.arguments.first);
+    }
+    return;
+  }
   if (argResults['help'] || argResults.arguments.length < 1) {
     stdout.write('Automation scripts for flutter');
     stdout.write(parser.usage);

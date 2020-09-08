@@ -2,13 +2,17 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 import 'package:path/path.dart' as path;
 
-String scriptRoot = path.dirname(Platform.script.toFilePath()) + "${path.separator}..";
+String scriptRoot =
+    path.dirname(Platform.script.toFilePath()) + "${path.separator}..";
+
+const String basePath = "./lib";
 
 const String pubspecPath = './pubspec.yaml';
 const String stringsPath = "./android/app/src/main/res/values/strings.xml";
 const String manifestPath = "./android/app/src/main/AndroidManifest.xml";
 const String appBuildPath = "./android/app/build.gradle";
 const String projectBuildPath = "./android/build.gradle";
+
 /// Default plugin versions
 Map<String, dynamic> defaultConfig = {
   "plugins": {
