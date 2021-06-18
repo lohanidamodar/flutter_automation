@@ -11,7 +11,7 @@ Future<void> googleMaps() async {
 /// adds google maps dependency to pubspec.yaml file
 Future<void> addGoogleMap() async {
   if (_Commons.pluginExists("google_maps_flutter")) return;
-  String plugin = await _PubspecAPI().getPackage('google_maps_flutter');
+  String? plugin = await _PubspecAPI().getPackage('google_maps_flutter');
   if (plugin == null)
     plugin =
         "google_maps_flutter: ${_Commons.loadConfig()['plugins']['google_maps']}";

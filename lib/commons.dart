@@ -1,8 +1,6 @@
 part of flutter_automation;
 
 class _Commons {
-  static final String scriptRoot =
-      path.dirname(Platform.script.toFilePath()) + "${path.separator}..";
   static final String basePath = "./lib";
   static final String pubspecPath = './pubspec.yaml';
   static final String stringsPath =
@@ -10,7 +8,6 @@ class _Commons {
   static final String manifestPath =
       "./android/app/src/main/AndroidManifest.xml";
   static final String appBuildPath = "./android/app/build.gradle";
-  static final String projectBuildPath = "./android/build.gradle";
 
   /// Default plugin versions
   static Map<String, dynamic> defaultConfig = {
@@ -67,42 +64,5 @@ class _Commons {
   /// Reads a file at [path] as a list of lines
   static List<String> getFileAsLines(String path) {
     return File(path).readAsLinesSync();
-  }
-
-  /// Copies files recursively from [from] directory to [to] directory
-  static void copyFilesRecursive(String from, String to,
-      {String renameBaseDir}) {
-    Process.run(
-      "cp",
-      ["-r", from, to],
-    ).then((res) {
-      stdout.write(res.stdout);
-      if (res.stderr.toString().isNotEmpty) {
-        stderr.write(res.stderr);
-      } else {
-        if (renameBaseDir != null) {
-          renameStockFiles(renameBaseDir);
-        }
-        stdout.writeln("copied stock files");
-      }
-    });
-  }
-
-  /// Renames all stock files in [basedir]
-  static void renameStockFiles(String basedir) {
-    Directory dir = Directory(basedir);
-    List<FileSystemEntity> files = dir.listSync(recursive: true);
-    files.forEach((file) {
-      if (file is File) {
-        String filename = path.basename(file.path);
-        if (filename.substring(filename.length - 5, filename.length) ==
-            ".temp") {
-          String newFilename = filename.substring(0, filename.length - 5);
-          file.renameSync(
-              path.dirname(file.path) + path.separator + newFilename);
-        }
-      }
-    });
-    stdout.writeln("renamed stock files");
   }
 }

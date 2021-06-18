@@ -5,13 +5,10 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
-part './firebase_auth.dart';
 part './google_maps.dart';
 part './android_signing.dart';
-part './firestore_crud.dart';
 part './pubspec_api.dart';
 part './commons.dart';
 part './gen/helper.dart';
@@ -21,10 +18,7 @@ part './gen/helper.dart';
 void decipherScript(List<String> arguments) async {
   var parser = ArgParser(allowTrailingOptions: true);
   parser.addFlag('help', abbr: 'h', negatable: false, help: "Usage help");
-  parser.addFlag('firebase-auth',
-      abbr: 'f', help: "Adds firebase authentication", negatable: false);
-  parser.addFlag('firestore-crud',
-      abbr: 'c', help: "Adds firestore CRUD boilerplate", negatable: false);
+  
   parser.addFlag('google-maps',
       abbr: 'g', help: "Adds google maps", negatable: false);
 
@@ -46,13 +40,13 @@ void decipherScript(List<String> arguments) async {
 
   var argResults = parser.parse(arguments);
   if (argResults.command?.name == "gen") {
-    final genArgResults = genParser.parse(argResults.command.arguments);
+    final genArgResults = genParser.parse(argResults.command!.arguments);
     if (genArgResults["core"]) {
       _genCore(path: genArgResults["path"]);
     } else {
       _genFeatureDirectory(
           path: genArgResults["path"],
-          feature: argResults.command.arguments.first);
+          feature: argResults.command!.arguments.first);
     }
     return;
   }
@@ -67,16 +61,8 @@ void decipherScript(List<String> arguments) async {
     return;
   }
 
-  if (argResults['firebase-auth']) {
-    await _firebaseAuth();
-  }
-
   if (argResults['google-maps']) {
     await googleMaps();
-  }
-
-  if (argResults['firestore-crud']) {
-    await _firestoreCrud();
   }
 
   if (argResults['android-sign']) {

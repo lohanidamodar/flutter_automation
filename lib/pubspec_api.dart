@@ -3,8 +3,8 @@ part of flutter_automation;
 class _PubspecAPI {
   final String baseUrl = "https://pub.dev/api/packages/";
   _PubspecAPI();
-  Future<String> getPackage(String package) async {
-    http.Response res = await http.get(baseUrl + package);
+  Future<String?> getPackage(String package) async {
+    http.Response res = await http.get(Uri.parse(baseUrl + package));
     if (res.statusCode == 200) {
       Map<String, dynamic> resJson = json.decode(res.body);
       _PubPackage package = _PubPackage.fromMap(resJson);
@@ -16,7 +16,7 @@ class _PubspecAPI {
 }
 
 class _PubPackage {
-  final String name;
+  final String? name;
   final _Version latest;
 
   _PubPackage(this.name, this.latest);
@@ -27,8 +27,8 @@ class _PubPackage {
 }
 
 class _Version {
-  final String version;
-  final String archiveUrl;
+  final String? version;
+  final String? archiveUrl;
 
   _Version(this.version, this.archiveUrl);
 

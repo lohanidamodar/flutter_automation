@@ -1,3 +1,7 @@
+## 2.0.0
+* Dropping firebase auth and firestore CRUD setup scripts in favor of [flutter_firebase_starter](https://github.com/lohanidamodar/flutter_firebase_starter) project
+* Null safety support
+
 ## 1.4.0
 * Have added `gen` command to generate directory and common files for a modified tdd structure
 * Fixed adding multiple instance of plugins if already exists

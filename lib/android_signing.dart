@@ -1,9 +1,9 @@
 part of flutter_automation;
 
-String alias;
+String? alias;
 String keystorePath = "keys/keystore.jks";
-String keyPass;
-String keystorePass;
+String? keyPass;
+String? keystorePass;
 const String keyPropertiesPath = "./android/key.properties";
 
 /// Main function that uses other helper functions to setup android signing
@@ -23,16 +23,16 @@ void _generateKeystore() {
 
   stdout.write(
       "enter dname as (CN=popupbits.com, OU=DD, O=Popup Bits Ltd., L=Kathmandu, S=Bagmati, C=NP): ");
-  String dname = stdin.readLineSync();
-  if (dname.isEmpty) dname = defDname;
+  String? dname = stdin.readLineSync();
+  if (dname == null || dname.isEmpty) dname = defDname;
   stdout.write("key password: ");
   keyPass = stdin.readLineSync();
   stdout.write("keystore password: ");
   keystorePass = stdin.readLineSync();
-  if (alias.isEmpty ||
+  if (alias == null || alias!.isEmpty ||
       dname.isEmpty ||
-      keyPass.isEmpty ||
-      keystorePass.isEmpty) {
+      keyPass == null || keyPass!.isEmpty ||
+      keystorePass == null || keystorePass!.isEmpty) {
     stderr.writeln("All inputs that don't have default mentioned are required");
     return;
   }
@@ -46,15 +46,15 @@ void _generateKeystore() {
     "-genkey",
     "-noprompt",
     "-alias",
-    alias,
+    alias!,
     "-dname",
     dname,
     "-keystore",
     keystorePath,
     "-storepass",
-    keystorePass,
+    keystorePass!,
     "-keypass",
-    keyPass,
+    keyPass!,
     "-keyalg",
     "RSA",
     "-keysize",

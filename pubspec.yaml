@@ -1,20 +1,19 @@
 name: flutter_automation
 description: A flutter package that provides various automation scripts to help
   you with your flutter project.
-version: 1.4.0
+version: 2.0.0
 author: Damodar Lohani<dlohani48@gmail.com>
 homepage: https://github.com/lohanidamodar/flutter_automation
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  args: ^1.6.0
-  yaml: ^2.2.1
-  path: ^1.7.0
-  http: ^0.12.2
+  args: ^2.1.1
+  yaml: ^3.1.0
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
