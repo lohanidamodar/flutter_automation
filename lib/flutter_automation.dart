@@ -40,13 +40,13 @@ void decipherScript(List<String> arguments) async {
 
   var argResults = parser.parse(arguments);
   if (argResults.command?.name == "gen") {
-    final genArgResults = genParser.parse(argResults.command.arguments);
+    final genArgResults = genParser.parse(argResults.command!.arguments);
     if (genArgResults["core"]) {
       _genCore(path: genArgResults["path"]);
     } else {
       _genFeatureDirectory(
           path: genArgResults["path"],
-          feature: argResults.command.arguments.first);
+          feature: argResults.command!.arguments.first);
     }
     return;
   }
