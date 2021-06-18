@@ -4,7 +4,7 @@ class _PubspecAPI {
   final String baseUrl = "https://pub.dev/api/packages/";
   _PubspecAPI();
   Future<String?> getPackage(String package) async {
-    http.Response res = await http.get(baseUrl + package as Uri);
+    http.Response res = await http.get(Uri.parse(baseUrl + package));
     if (res.statusCode == 200) {
       Map<String, dynamic> resJson = json.decode(res.body);
       _PubPackage package = _PubPackage.fromMap(resJson);
